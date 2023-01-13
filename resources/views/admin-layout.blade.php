@@ -18,7 +18,9 @@
                 <a href="/quizes">
                     <button class="bg-[#9D00FF] text-white p-2 mr-4 rounded-lg"> My Quizes</button>
                 </a>
-                <h4 class="font-bold mr-2"> Hello {{ auth()->user()->username }}!</h4>   
+                @auth
+                 <h4 class="font-bold mr-2"> Welcome {{ auth()->user()->username }}!</h4>                       
+                @endauth
                <form method="POST" action="{{ route('logout') }}" class="pl-5 outline-none bg-transparent font-medium">
                    @csrf
                    <button type="submit">Log out</button>

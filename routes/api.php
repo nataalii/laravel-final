@@ -23,3 +23,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
+// Start quiz
+Route::get('quiz/{quiz:id}/question', [QuizController::class, 'showQuestions'])->name('question');
+Route::post('quiz/{quiz:id}/question', [QuizController::class, 'checkAnswer']);

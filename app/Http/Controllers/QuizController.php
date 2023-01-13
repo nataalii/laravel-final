@@ -109,6 +109,23 @@ class QuizController extends Controller
 		]);
 	}
 
+	public function checkAnswer(Request $request, Quiz $quiz)
+	{
+		    $answer = $request->input('answer');
+		    $correct = $request->input('correct');
+			
+			if($answer === $correct){
+				return response()->json([
+					'isCorrect' => true,
+				], 200);
+			}
+
+			return response()->json([
+				'isCorrect' => false,
+			], 200);
+
+	}
+
 	public function end(Quiz $quiz, Request $request) {
         $radio = $request->input('radio-');
         $correct = 0;

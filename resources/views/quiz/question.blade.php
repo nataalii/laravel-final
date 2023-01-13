@@ -2,10 +2,10 @@
 @section('slot')
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<form class="flex flex-col justify-around w-[1500px]  m-auto my-12 " id='form' 
+<form class="flex flex-col justify-around w-[1500px]  m-auto my-12 " id='form'
       action="{{ route('quiz.end', ['quiz' => $quiz]) }}">
     @csrf
-
+    <h1 class="hidden" id="quiz-id">{{ $quiz->id }}</h1>
     @foreach ($quiz->question as $question )
     <div class=" flex justify-around mt-9 question "  style=" display: none">
         <div class="mt-5 w-[850px] h-[700px]">
@@ -21,19 +21,19 @@
         <div class="flex flex-col">
             <label class="container">
 
-            <input type="radio" name="radio-[{{ $question->id }}]" value='A'  id='A' onchange="result(this, {{ $question->correct }})"/>
+            <input type="radio" name="radio-[{{ $question->id }}]" value='A'  id='A' onchange="checkAnswer(this, {{ $question->correct }})"/>
             <span class="checkmark">(A) {{ $question->A }}</span>
             </label>
             <label class="container">
-            <input type="radio" name="radio-[{{ $question->id }}]" value="B"  id='B' onchange="result(this, {{ $question->correct }})">
+            <input type="radio" name="radio-[{{ $question->id }}]" value="B"  id='B' onchange="checkAnswer(this, {{ $question->correct }})">
             <span class="checkmark">(B) {{ $question->B }}</span>
             </label>
             <label class="container">
-            <input type="radio" name="radio-[{{ $question->id }}]" value="C"  id='C' onchange="result(this, {{ $question->correct }})">
+            <input type="radio" name="radio-[{{ $question->id }}]" value="C"  id='C' onchange="checkAnswer(this, {{ $question->correct }})">
             <span class="checkmark">(C) {{ $question->C }}</span>
             </label>
             <label class="container">
-            <input type="radio" name="radio-[{{ $question->id }}]" value="D"  id='D' onchange="result(this, {{ $question->correct }})">
+            <input type="radio" name="radio-[{{ $question->id }}]" value="D"  id='D' onchange="checkAnswer(this, {{ $question->correct }})">
             <span class="checkmark">(D) {{ $question->D }}</span>
             </label>
 
@@ -46,7 +46,7 @@
     <div class=" relative w-48 ml-[970px] -mt-56 flex flex-col ">
         <h1 id="result" class=" text-blue-700 h-1 "></h1>
         <button onclick="showNextQuestion()" type="button" id="next-button" class="bg-[#9D00FF] text-white w-24  p-2 mr-4 rounded-lg absolute top-8">Next</button>
-        <button onclick="submit()" id="submit-button" class="bg-[#a557d6] text-white w-24  p-2 mr-4 rounded-lg absolute top-8 hidden">Submit</button>
+        <button id="submit-button" class="bg-[#a557d6] text-white w-24  p-2 mr-4 rounded-lg absolute top-8 hidden">Submit</button>
 
     </div>
 
@@ -56,6 +56,8 @@
         let nextButton = document.getElementById('next-button')
         let submitButton = document.getElementById('submit-button')
         let answer = document.getElementById('result')
+        let form = document.getElementById('form')
+        let quizId = document.getElementById('quiz-id').textContent
         const firstQuestion = questions[0].style.display = 'flex';
         let questionIndex = 0
         let isChecked = false;
@@ -79,31 +81,45 @@
             isChecked = false
         }
 
-        const result = (radioButton, correct) => {
+
+        const checkAnswer = (radioButton, correct) => {
             let index = 0
             let radioButtons = document.getElementsByName(radioButton.name)
             isChecked = true
-            if(radioButton.id === correct[index].id){
-                answer.innerHTML = ' Your Answer is Correct'
-                index++
-            } else {
-                answer.innerHTML = ' Your Answer is Incorrect'
-            }
             
+            fetch(`http://127.0.0.1:8000/api/quiz/${quizId}/question`, {
+                method: 'POST',
+                body: JSON.stringify({ answer: radioButton.id, correct: correct[index].id }),
+                headers: { 'Content-Type': 'application/json' }
+            }).then((response) => {
+                return response.json()
+            }).then((data) => {
+                if(data.isCorrect){
+                    answer.innerHTML = ' Your Answer is Correct'
+                    index++
+                } else {
+                    answer.innerHTML = ' Your Answer is Incorrect'
+                }
+            }).catch((err) => {
+               console.log(err) 
+            });
+
             radioButtons.forEach((radio) => {
                 if (radio != radioButton) {
                     radio.disabled = true;
                 }
             })             
         }
-        const submit = (e) => {
-            var formData = new FormData(e.target)
-            console.log(formData)
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
             if(isChecked){
-                e.preventDefault();
-                console.log(formData)
+                form.submit();
+            } else {
+                answer.innerHTML = 'Choose the answer'
             }
-        }
+        })
+
     </script>
 
 @endsection
