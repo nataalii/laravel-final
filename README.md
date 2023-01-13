@@ -10,7 +10,7 @@ Quizz Website
 
 ### Installation
 
-1\. First of all you need to clone Coronatime repository from github:
+1\. First of all you need to clone laravel-final repository from github:
 
 ```
 git clone https://github.com/nnataali/laravel-final.git
