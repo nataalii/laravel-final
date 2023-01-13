@@ -44,6 +44,11 @@ Route::group([ 'middleware' => 'auth'], function () {
 	//Publish quiz by Admin
     Route::get('/pending', [QuizController::class, 'pending'])->name('quiz.pending');
 	Route::post('/quizzes/{quiz:id}/publish', [QuizController::class, 'publish'])->name('quiz.publish');
+	
+	// Start quiz
+	Route::get('quiz/{quiz:id}/start', [QuizController::class, 'start'])->name('quiz.start');
+	Route::get('quiz/{quiz:id}/question', [QuizController::class, 'showQuestions'])->name('question');
+	Route::get('quiz/{quiz:id}/end', [QuizController::class, 'end'])->name('quiz.end');
 
 
 });

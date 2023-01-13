@@ -23,9 +23,3 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-	// Start quiz
-// Route::get('quiz/{quiz:id}/start', [QuizController::class, 'start'])->name('quiz.start');
-// Route::get('quiz/{quiz:id}/question', [QuizController::class, 'showQuestions'])->name('question');
-// Route::get('quiz/{quiz:id}/end', [QuizController::class, 'end'])->name('quiz.end');
-
-

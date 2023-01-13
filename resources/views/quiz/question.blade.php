@@ -46,7 +46,7 @@
     <div class=" relative w-48 ml-[970px] -mt-56 flex flex-col ">
         <h1 id="result" class=" text-blue-700 h-1 "></h1>
         <button onclick="showNextQuestion()" type="button" id="next-button" class="bg-[#9D00FF] text-white w-24  p-2 mr-4 rounded-lg absolute top-8">Next</button>
-        <button type="submit" id="submit-button" class="bg-[#a557d6] text-white w-24  p-2 mr-4 rounded-lg absolute top-8 hidden">Submit</button>
+        <button onclick="submit()" id="submit-button" class="bg-[#a557d6] text-white w-24  p-2 mr-4 rounded-lg absolute top-8 hidden">Submit</button>
 
     </div>
 
@@ -96,26 +96,14 @@
                 }
             })             
         }
-        // const submit = (e) => {
-        //     var formData = new FormData(e.target)
-        //     console.log(formData)
-        //     if(isChecked){
-        //         e.preventDefault();
-        //         console.log(formData)
-        //     }
-        // }
+        const submit = (e) => {
+            var formData = new FormData(e.target)
+            console.log(formData)
+            if(isChecked){
+                e.preventDefault();
+                console.log(formData)
+            }
+        }
     </script>
 
 @endsection
-
-                {{-- // axios.post('http://localhost:8000/api/quiz/2/question', {
-                //     correct: 'jnj',
-                //     radio_button: 'kjn'
-                // })
-                // .then(function (response) {
-                //     // const newComment = `<p><strong>${response.data.name}</strong></p> <p>${response.data.message}</p>`;
-                //     console.log(response);
-                // })
-                // .catch(function (error) {
-                //     console.log(error);
-                // }); --}}
